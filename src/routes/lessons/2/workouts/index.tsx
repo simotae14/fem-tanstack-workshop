@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, getRouteApi, Link } from "@tanstack/react-router";
 import { useMemo } from "react";
 
 type Workout = {
@@ -42,6 +42,7 @@ export const Route = createFileRoute("/lessons/2/workouts/")({
     const { exercises, workouts } = getWorkoutsAndExercises();
 
     // TODO: 4. Add a console.log statement here
+    console.log("I'M IN A LOADER");
     return {
       workouts,
       exercises,
@@ -53,11 +54,19 @@ export const Route = createFileRoute("/lessons/2/workouts/")({
 
 function RouteComponent() {
   // TODO: 1. load loader data
+  // const {
+  //   exercises,
+  //   workouts,
+  // } = Route.useLoaderData();
 
   // TODO: 2. use getRouteApi
+  const myRoute = getRouteApi("/lessons/2/workouts/");
 
-  const workouts: any[] = [];
-  const exercises: any = [];
+  const {
+    exercises,
+    workouts,
+  } = myRoute.useLoaderData();
+
 
   const exerciseLookup = useMemo(() => {
     return new Map(exercises.map(exercise => [exercise.id, exercise]));
