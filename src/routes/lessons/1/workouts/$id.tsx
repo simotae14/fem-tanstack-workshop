@@ -11,7 +11,14 @@ function RouteComponent() {
     <div className="flex flex-col gap-4">
       <div className="flex">
         <h1 className="text-lg">Workout #{id}</h1>
-        {/* TODO: Link to index (add ml-auto) */}
+        <Link
+          className="ml-auto"
+          to="/lessons/1/workouts"
+          search={{ search: undefined }}
+          preload={false}
+        >
+          Back
+        </Link>
       </div>
     </div>
   );

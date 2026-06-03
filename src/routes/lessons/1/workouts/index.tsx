@@ -3,22 +3,16 @@ import { Input } from "@/components/ui/input";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useRef } from "react";
 
-// TODO: 6. Add a layout
-
-
-// TODO: 1. desscribe route structure / show off dev tools
 export const Route = createFileRoute("/lessons/1/workouts/")({
   component: RouteComponent,
-  // TODO: 2. add search param
-  validateSearch: (searchParams: Record<string, unknown>) => {
+  validateSearch: (searchParams: Record<string, string>) => {
     return {
-      search: (searchParams.search as string) || undefined
+      search: searchParams.search || undefined,
     };
-  }
+  },
 });
 
 function RouteComponent() {
-  // TODO: 3. make this go away
   const { search } = Route.useSearch();
   const searchRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
@@ -39,11 +33,10 @@ function RouteComponent() {
         <Button
           variant="outline"
           onClick={() => {
-            // 4. TODO: Set search param
             navigate({
               to: "/lessons/1/workouts",
               search: {
-                search: searchRef.current!.value,
+                search: searchRef.current?.value,
               },
             });
           }}
@@ -56,14 +49,14 @@ function RouteComponent() {
           <span className="flex gap-2">
             <span>{workout.name}</span>
 
-            {/* 5. TODO: Link to workout (add ml-auto) */}
             <Link
               className="ml-auto"
-              to="/lessons/1/workouts/$id"
-              params={{
-                id: workout.id.toString()
-              }}
-            >View</Link>
+              to={`/lessons/1/workouts/$id`}
+              params={{ id: String(workout.id) }}
+              preload={false}
+            >
+              View
+            </Link>
           </span>
         </div>
       ))}

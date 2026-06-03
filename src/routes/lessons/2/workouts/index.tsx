@@ -1,4 +1,4 @@
-import { createFileRoute, getRouteApi, Link } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo } from "react";
 
 type Workout = {
@@ -12,10 +12,6 @@ type Exercise = {
   name: string;
 };
 
-type RouteData = {
-  exercises: Exercise[];
-  workouts: Workout[];
-};
 function getWorkoutsAndExercises() {
   const workouts: Workout[] = [
     { id: 1, name: "Workout 1", exercises: [1, 2, 3] },
@@ -34,15 +30,11 @@ function getWorkoutsAndExercises() {
   };
 }
 
-// TODO: 3. loads are isomorphic!!!!!
-
 export const Route = createFileRoute("/lessons/2/workouts/")({
   component: RouteComponent,
   loader: async () => {
-    const { exercises, workouts } = getWorkoutsAndExercises();
+    const { workouts, exercises } = getWorkoutsAndExercises();
 
-    // TODO: 4. Add a console.log statement here
-    console.log("I'M IN A LOADER");
     return {
       workouts,
       exercises,
@@ -53,21 +45,7 @@ export const Route = createFileRoute("/lessons/2/workouts/")({
 });
 
 function RouteComponent() {
-  // TODO: 1. load loader data
-  // const {
-  //   exercises,
-  //   workouts,
-  // } = Route.useLoaderData();
-
-  // TODO: 2. use getRouteApi
-  const myRoute = getRouteApi("/lessons/2/workouts/");
-
-  const {
-    exercises,
-    workouts,
-  } = myRoute.useLoaderData();
-
-
+  const { workouts, exercises } = Route.useLoaderData();
   const exerciseLookup = useMemo(() => {
     return new Map(exercises.map(exercise => [exercise.id, exercise]));
   }, [exercises]);
