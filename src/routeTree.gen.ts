@@ -53,6 +53,7 @@ import { Route as Lessons14WorkoutsWorkoutsApi2RouteImport } from './routes/less
 import { Route as Lessons14WorkoutsWorkoutsApiRouteImport } from './routes/lessons/14/workouts/workouts-api'
 import { Route as Lessons11WorkoutsIdRouteImport } from './routes/lessons/11/workouts/$id'
 import { Route as Lessons10WorkoutsIdRouteImport } from './routes/lessons/10/workouts/$id'
+import { Route as Lessons1WorkoutsFooRouteImport } from './routes/lessons/1/workouts/foo'
 import { Route as Lessons1WorkoutsIdRouteImport } from './routes/lessons/1/workouts/$id'
 import { Route as AppWorkoutsEditNotFoundIndexRouteImport } from './routes/app/workouts/edit/not-found/index'
 import { Route as AppWorkoutsEditInvalidIndexRouteImport } from './routes/app/workouts/edit/invalid/index'
@@ -285,6 +286,11 @@ const Lessons10WorkoutsIdRoute = Lessons10WorkoutsIdRouteImport.update({
   path: '/10/workouts/$id',
   getParentRoute: () => LessonsRouteRoute,
 } as any)
+const Lessons1WorkoutsFooRoute = Lessons1WorkoutsFooRouteImport.update({
+  id: '/1/workouts/foo',
+  path: '/1/workouts/foo',
+  getParentRoute: () => LessonsRouteRoute,
+} as any)
 const Lessons1WorkoutsIdRoute = Lessons1WorkoutsIdRouteImport.update({
   id: '/1/workouts/$id',
   path: '/1/workouts/$id',
@@ -338,6 +344,7 @@ export interface FileRoutesByFullPath {
   '/lessons/15/': typeof Lessons15IndexRoute
   '/lessons/2A/': typeof Lessons2AIndexRoute
   '/lessons/1/workouts/$id': typeof Lessons1WorkoutsIdRoute
+  '/lessons/1/workouts/foo': typeof Lessons1WorkoutsFooRoute
   '/lessons/10/workouts/$id': typeof Lessons10WorkoutsIdRoute
   '/lessons/11/workouts/$id': typeof Lessons11WorkoutsIdRoute
   '/lessons/14/workouts/workouts-api': typeof Lessons14WorkoutsWorkoutsApiRoute
@@ -386,6 +393,7 @@ export interface FileRoutesByTo {
   '/lessons/15': typeof Lessons15IndexRoute
   '/lessons/2A': typeof Lessons2AIndexRoute
   '/lessons/1/workouts/$id': typeof Lessons1WorkoutsIdRoute
+  '/lessons/1/workouts/foo': typeof Lessons1WorkoutsFooRoute
   '/lessons/10/workouts/$id': typeof Lessons10WorkoutsIdRoute
   '/lessons/11/workouts/$id': typeof Lessons11WorkoutsIdRoute
   '/lessons/14/workouts/workouts-api': typeof Lessons14WorkoutsWorkoutsApiRoute
@@ -439,6 +447,7 @@ export interface FileRoutesById {
   '/lessons/15/': typeof Lessons15IndexRoute
   '/lessons/2A/': typeof Lessons2AIndexRoute
   '/lessons/1/workouts/$id': typeof Lessons1WorkoutsIdRoute
+  '/lessons/1/workouts/foo': typeof Lessons1WorkoutsFooRoute
   '/lessons/10/workouts/$id': typeof Lessons10WorkoutsIdRoute
   '/lessons/11/workouts/$id': typeof Lessons11WorkoutsIdRoute
   '/lessons/14/workouts/workouts-api': typeof Lessons14WorkoutsWorkoutsApiRoute
@@ -493,6 +502,7 @@ export interface FileRouteTypes {
     | '/lessons/15/'
     | '/lessons/2A/'
     | '/lessons/1/workouts/$id'
+    | '/lessons/1/workouts/foo'
     | '/lessons/10/workouts/$id'
     | '/lessons/11/workouts/$id'
     | '/lessons/14/workouts/workouts-api'
@@ -541,6 +551,7 @@ export interface FileRouteTypes {
     | '/lessons/15'
     | '/lessons/2A'
     | '/lessons/1/workouts/$id'
+    | '/lessons/1/workouts/foo'
     | '/lessons/10/workouts/$id'
     | '/lessons/11/workouts/$id'
     | '/lessons/14/workouts/workouts-api'
@@ -593,6 +604,7 @@ export interface FileRouteTypes {
     | '/lessons/15/'
     | '/lessons/2A/'
     | '/lessons/1/workouts/$id'
+    | '/lessons/1/workouts/foo'
     | '/lessons/10/workouts/$id'
     | '/lessons/11/workouts/$id'
     | '/lessons/14/workouts/workouts-api'
@@ -944,6 +956,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Lessons10WorkoutsIdRouteImport
       parentRoute: typeof LessonsRouteRoute
     }
+    '/lessons/1/workouts/foo': {
+      id: '/lessons/1/workouts/foo'
+      path: '/1/workouts/foo'
+      fullPath: '/lessons/1/workouts/foo'
+      preLoaderRoute: typeof Lessons1WorkoutsFooRouteImport
+      parentRoute: typeof LessonsRouteRoute
+    }
     '/lessons/1/workouts/$id': {
       id: '/lessons/1/workouts/$id'
       path: '/1/workouts/$id'
@@ -1062,6 +1081,7 @@ interface LessonsRouteRouteChildren {
   Lessons15IndexRoute: typeof Lessons15IndexRoute
   Lessons2AIndexRoute: typeof Lessons2AIndexRoute
   Lessons1WorkoutsIdRoute: typeof Lessons1WorkoutsIdRoute
+  Lessons1WorkoutsFooRoute: typeof Lessons1WorkoutsFooRoute
   Lessons10WorkoutsIdRoute: typeof Lessons10WorkoutsIdRoute
   Lessons11WorkoutsIdRoute: typeof Lessons11WorkoutsIdRoute
   Lessons14WorkoutsWorkoutsApiRoute: typeof Lessons14WorkoutsWorkoutsApiRoute
@@ -1095,6 +1115,7 @@ const LessonsRouteRouteChildren: LessonsRouteRouteChildren = {
   Lessons15IndexRoute: Lessons15IndexRoute,
   Lessons2AIndexRoute: Lessons2AIndexRoute,
   Lessons1WorkoutsIdRoute: Lessons1WorkoutsIdRoute,
+  Lessons1WorkoutsFooRoute: Lessons1WorkoutsFooRoute,
   Lessons10WorkoutsIdRoute: Lessons10WorkoutsIdRoute,
   Lessons11WorkoutsIdRoute: Lessons11WorkoutsIdRoute,
   Lessons14WorkoutsWorkoutsApiRoute: Lessons14WorkoutsWorkoutsApiRoute,
