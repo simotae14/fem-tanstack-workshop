@@ -2,9 +2,9 @@ import { useMemo } from "react";
 
 import { createFileRoute, Link } from "@tanstack/react-router";
 
-// import { createServerFn } from "@tanstack/react-start";
-// import { asc, desc, eq } from "drizzle-orm";
-// import { getDb } from "@/data/db";
+import { createServerFn } from "@tanstack/react-start";
+import { asc, desc, eq } from "drizzle-orm";
+import { getDb } from "@/data/db";
 
 // TODO: implement same server functions here
 // don't forget to return a SINGLE workout
@@ -14,28 +14,47 @@ import {
   exercises as exercisesTable,
 } from "@/drizzle/schema";
 
-const getWorkout = (id: number) => {
-  return {
-    id: 1,
-    name: "Workout 1",
-    workoutDate: "2026-01-01",
-    exercises: [1, 2],
-  };
-};
+const loadExercises = createServerFn({
+  method: "GET",
+})
+  .handler(async () => {
+    const db = await getDb();
+    const exercises = await db
+      .select()
+      .from(exercisesTable)
+      .orderBy(asc(exercisesTable.name));
+    return exercises;
+  });
 
-const getExercises = () => {
-  return [
-    { id: 1, name: "Exercise 1" },
-    { id: 2, name: "Exercise 2" },
-  ];
-};
+const loadWorkout = createServerFn({
+  method: "GET",
+})
+  .inputValidator((input: { id: number }) => ({ fooooo: input.id }))
+  .handler(async ({ data }) => {
+    const db = await getDb();
+    const workouts = await db
+      .select()
+      .from(workoutTable)
+      .where(eq(workoutTable.id, data.fooooo))
+      .orderBy(desc(workoutTable.workoutDate))
+      .limit(3);
+    const workout = workouts[0];
+    return {
+      ...workout,
+      exercises: [1, 2, 3],
+    };
+  });
 
 export const Route = createFileRoute("/lessons/3/workouts/$id")({
   component: RouteComponent,
   loader: async ({ params }) => {
     const [workout, exercises] = await Promise.all([
-      getWorkout(Number(params.id)),
-      getExercises(),
+      loadWorkout({
+        data: {
+          id: Number(params.id),
+        }
+      }),
+      loadExercises(),
     ]);
 
     return {
