@@ -5,10 +5,16 @@ import { useRef } from "react";
 
 // TODO: 6. Add a layout
 
+
 // TODO: 1. desscribe route structure / show off dev tools
 export const Route = createFileRoute("/lessons/1/workouts/")({
   component: RouteComponent,
   // TODO: 2. add search param
+  validateSearch: (searchParams: Record<string, unknown>) => {
+    return {
+      search: (searchParams.search as string) || undefined
+    };
+  }
 });
 
 function RouteComponent() {
@@ -34,6 +40,12 @@ function RouteComponent() {
           variant="outline"
           onClick={() => {
             // 4. TODO: Set search param
+            navigate({
+              to: "/lessons/1/workouts",
+              search: {
+                search: searchRef.current!.value,
+              },
+            });
           }}
         >
           Search
@@ -45,6 +57,13 @@ function RouteComponent() {
             <span>{workout.name}</span>
 
             {/* 5. TODO: Link to workout (add ml-auto) */}
+            <Link
+              className="ml-auto"
+              to="/lessons/1/workouts/$id"
+              params={{
+                id: workout.id.toString()
+              }}
+            >View</Link>
           </span>
         </div>
       ))}

@@ -25,6 +25,7 @@ import { Route as AppAdminIndexRouteImport } from './routes/app/admin/index'
 import { Route as AppAdminExercisesRouteImport } from './routes/app/admin/exercises'
 import { Route as AppAdminBodyCompositionRouteImport } from './routes/app/admin/body-composition'
 import { Route as Lessons5WorkoutsRouteRouteImport } from './routes/lessons/5/workouts/route'
+import { Route as Lessons1WorkoutsRouteRouteImport } from './routes/lessons/1/workouts/route'
 import { Route as Lessons9WorkoutsIndexRouteImport } from './routes/lessons/9/workouts/index'
 import { Route as Lessons8WorkoutsIndexRouteImport } from './routes/lessons/8/workouts/index'
 import { Route as Lessons7WorkoutsIndexRouteImport } from './routes/lessons/7/workouts/index'
@@ -53,7 +54,6 @@ import { Route as Lessons14WorkoutsWorkoutsApi2RouteImport } from './routes/less
 import { Route as Lessons14WorkoutsWorkoutsApiRouteImport } from './routes/lessons/14/workouts/workouts-api'
 import { Route as Lessons11WorkoutsIdRouteImport } from './routes/lessons/11/workouts/$id'
 import { Route as Lessons10WorkoutsIdRouteImport } from './routes/lessons/10/workouts/$id'
-import { Route as Lessons1WorkoutsFooRouteImport } from './routes/lessons/1/workouts/foo'
 import { Route as Lessons1WorkoutsIdRouteImport } from './routes/lessons/1/workouts/$id'
 import { Route as AppWorkoutsEditNotFoundIndexRouteImport } from './routes/app/workouts/edit/not-found/index'
 import { Route as AppWorkoutsEditInvalidIndexRouteImport } from './routes/app/workouts/edit/invalid/index'
@@ -141,6 +141,11 @@ const Lessons5WorkoutsRouteRoute = Lessons5WorkoutsRouteRouteImport.update({
   path: '/5/workouts',
   getParentRoute: () => LessonsRouteRoute,
 } as any)
+const Lessons1WorkoutsRouteRoute = Lessons1WorkoutsRouteRouteImport.update({
+  id: '/1/workouts',
+  path: '/1/workouts',
+  getParentRoute: () => LessonsRouteRoute,
+} as any)
 const Lessons9WorkoutsIndexRoute = Lessons9WorkoutsIndexRouteImport.update({
   id: '/9/workouts/',
   path: '/9/workouts/',
@@ -207,9 +212,9 @@ const Lessons10WorkoutsIndexRoute = Lessons10WorkoutsIndexRouteImport.update({
   getParentRoute: () => LessonsRouteRoute,
 } as any)
 const Lessons1WorkoutsIndexRoute = Lessons1WorkoutsIndexRouteImport.update({
-  id: '/1/workouts/',
-  path: '/1/workouts/',
-  getParentRoute: () => LessonsRouteRoute,
+  id: '/',
+  path: '/',
+  getParentRoute: () => Lessons1WorkoutsRouteRoute,
 } as any)
 const AppAdminWorkoutTemplatesIndexRoute =
   AppAdminWorkoutTemplatesIndexRouteImport.update({
@@ -286,15 +291,10 @@ const Lessons10WorkoutsIdRoute = Lessons10WorkoutsIdRouteImport.update({
   path: '/10/workouts/$id',
   getParentRoute: () => LessonsRouteRoute,
 } as any)
-const Lessons1WorkoutsFooRoute = Lessons1WorkoutsFooRouteImport.update({
-  id: '/1/workouts/foo',
-  path: '/1/workouts/foo',
-  getParentRoute: () => LessonsRouteRoute,
-} as any)
 const Lessons1WorkoutsIdRoute = Lessons1WorkoutsIdRouteImport.update({
-  id: '/1/workouts/$id',
-  path: '/1/workouts/$id',
-  getParentRoute: () => LessonsRouteRoute,
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => Lessons1WorkoutsRouteRoute,
 } as any)
 const AppWorkoutsEditNotFoundIndexRoute =
   AppWorkoutsEditNotFoundIndexRouteImport.update({
@@ -333,6 +333,7 @@ export interface FileRoutesByFullPath {
   '/app/admin': typeof AppAdminRouteRouteWithChildren
   '/app/': typeof AppIndexRoute
   '/lessons/': typeof LessonsIndexRoute
+  '/lessons/1/workouts': typeof Lessons1WorkoutsRouteRouteWithChildren
   '/lessons/5/workouts': typeof Lessons5WorkoutsRouteRouteWithChildren
   '/app/admin/body-composition': typeof AppAdminBodyCompositionRoute
   '/app/admin/exercises': typeof AppAdminExercisesRoute
@@ -344,7 +345,6 @@ export interface FileRoutesByFullPath {
   '/lessons/15/': typeof Lessons15IndexRoute
   '/lessons/2A/': typeof Lessons2AIndexRoute
   '/lessons/1/workouts/$id': typeof Lessons1WorkoutsIdRoute
-  '/lessons/1/workouts/foo': typeof Lessons1WorkoutsFooRoute
   '/lessons/10/workouts/$id': typeof Lessons10WorkoutsIdRoute
   '/lessons/11/workouts/$id': typeof Lessons11WorkoutsIdRoute
   '/lessons/14/workouts/workouts-api': typeof Lessons14WorkoutsWorkoutsApiRoute
@@ -393,7 +393,6 @@ export interface FileRoutesByTo {
   '/lessons/15': typeof Lessons15IndexRoute
   '/lessons/2A': typeof Lessons2AIndexRoute
   '/lessons/1/workouts/$id': typeof Lessons1WorkoutsIdRoute
-  '/lessons/1/workouts/foo': typeof Lessons1WorkoutsFooRoute
   '/lessons/10/workouts/$id': typeof Lessons10WorkoutsIdRoute
   '/lessons/11/workouts/$id': typeof Lessons11WorkoutsIdRoute
   '/lessons/14/workouts/workouts-api': typeof Lessons14WorkoutsWorkoutsApiRoute
@@ -436,6 +435,7 @@ export interface FileRoutesById {
   '/app/admin': typeof AppAdminRouteRouteWithChildren
   '/app/': typeof AppIndexRoute
   '/lessons/': typeof LessonsIndexRoute
+  '/lessons/1/workouts': typeof Lessons1WorkoutsRouteRouteWithChildren
   '/lessons/5/workouts': typeof Lessons5WorkoutsRouteRouteWithChildren
   '/app/admin/body-composition': typeof AppAdminBodyCompositionRoute
   '/app/admin/exercises': typeof AppAdminExercisesRoute
@@ -447,7 +447,6 @@ export interface FileRoutesById {
   '/lessons/15/': typeof Lessons15IndexRoute
   '/lessons/2A/': typeof Lessons2AIndexRoute
   '/lessons/1/workouts/$id': typeof Lessons1WorkoutsIdRoute
-  '/lessons/1/workouts/foo': typeof Lessons1WorkoutsFooRoute
   '/lessons/10/workouts/$id': typeof Lessons10WorkoutsIdRoute
   '/lessons/11/workouts/$id': typeof Lessons11WorkoutsIdRoute
   '/lessons/14/workouts/workouts-api': typeof Lessons14WorkoutsWorkoutsApiRoute
@@ -491,6 +490,7 @@ export interface FileRouteTypes {
     | '/app/admin'
     | '/app/'
     | '/lessons/'
+    | '/lessons/1/workouts'
     | '/lessons/5/workouts'
     | '/app/admin/body-composition'
     | '/app/admin/exercises'
@@ -502,7 +502,6 @@ export interface FileRouteTypes {
     | '/lessons/15/'
     | '/lessons/2A/'
     | '/lessons/1/workouts/$id'
-    | '/lessons/1/workouts/foo'
     | '/lessons/10/workouts/$id'
     | '/lessons/11/workouts/$id'
     | '/lessons/14/workouts/workouts-api'
@@ -551,7 +550,6 @@ export interface FileRouteTypes {
     | '/lessons/15'
     | '/lessons/2A'
     | '/lessons/1/workouts/$id'
-    | '/lessons/1/workouts/foo'
     | '/lessons/10/workouts/$id'
     | '/lessons/11/workouts/$id'
     | '/lessons/14/workouts/workouts-api'
@@ -593,6 +591,7 @@ export interface FileRouteTypes {
     | '/app/admin'
     | '/app/'
     | '/lessons/'
+    | '/lessons/1/workouts'
     | '/lessons/5/workouts'
     | '/app/admin/body-composition'
     | '/app/admin/exercises'
@@ -604,7 +603,6 @@ export interface FileRouteTypes {
     | '/lessons/15/'
     | '/lessons/2A/'
     | '/lessons/1/workouts/$id'
-    | '/lessons/1/workouts/foo'
     | '/lessons/10/workouts/$id'
     | '/lessons/11/workouts/$id'
     | '/lessons/14/workouts/workouts-api'
@@ -760,6 +758,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Lessons5WorkoutsRouteRouteImport
       parentRoute: typeof LessonsRouteRoute
     }
+    '/lessons/1/workouts': {
+      id: '/lessons/1/workouts'
+      path: '/1/workouts'
+      fullPath: '/lessons/1/workouts'
+      preLoaderRoute: typeof Lessons1WorkoutsRouteRouteImport
+      parentRoute: typeof LessonsRouteRoute
+    }
     '/lessons/9/workouts/': {
       id: '/lessons/9/workouts/'
       path: '/9/workouts'
@@ -853,10 +858,10 @@ declare module '@tanstack/react-router' {
     }
     '/lessons/1/workouts/': {
       id: '/lessons/1/workouts/'
-      path: '/1/workouts'
+      path: '/'
       fullPath: '/lessons/1/workouts/'
       preLoaderRoute: typeof Lessons1WorkoutsIndexRouteImport
-      parentRoute: typeof LessonsRouteRoute
+      parentRoute: typeof Lessons1WorkoutsRouteRoute
     }
     '/app/admin/workout-templates/': {
       id: '/app/admin/workout-templates/'
@@ -956,19 +961,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Lessons10WorkoutsIdRouteImport
       parentRoute: typeof LessonsRouteRoute
     }
-    '/lessons/1/workouts/foo': {
-      id: '/lessons/1/workouts/foo'
-      path: '/1/workouts/foo'
-      fullPath: '/lessons/1/workouts/foo'
-      preLoaderRoute: typeof Lessons1WorkoutsFooRouteImport
-      parentRoute: typeof LessonsRouteRoute
-    }
     '/lessons/1/workouts/$id': {
       id: '/lessons/1/workouts/$id'
-      path: '/1/workouts/$id'
+      path: '/$id'
       fullPath: '/lessons/1/workouts/$id'
       preLoaderRoute: typeof Lessons1WorkoutsIdRouteImport
-      parentRoute: typeof LessonsRouteRoute
+      parentRoute: typeof Lessons1WorkoutsRouteRoute
     }
     '/app/workouts/edit/not-found/': {
       id: '/app/workouts/edit/not-found/'
@@ -1060,6 +1058,21 @@ const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(
   AppRouteRouteChildren,
 )
 
+interface Lessons1WorkoutsRouteRouteChildren {
+  Lessons1WorkoutsIdRoute: typeof Lessons1WorkoutsIdRoute
+  Lessons1WorkoutsIndexRoute: typeof Lessons1WorkoutsIndexRoute
+}
+
+const Lessons1WorkoutsRouteRouteChildren: Lessons1WorkoutsRouteRouteChildren = {
+  Lessons1WorkoutsIdRoute: Lessons1WorkoutsIdRoute,
+  Lessons1WorkoutsIndexRoute: Lessons1WorkoutsIndexRoute,
+}
+
+const Lessons1WorkoutsRouteRouteWithChildren =
+  Lessons1WorkoutsRouteRoute._addFileChildren(
+    Lessons1WorkoutsRouteRouteChildren,
+  )
+
 interface Lessons5WorkoutsRouteRouteChildren {
   Lessons5WorkoutsIdRoute: typeof Lessons5WorkoutsIdRoute
   Lessons5WorkoutsIndexRoute: typeof Lessons5WorkoutsIndexRoute
@@ -1077,11 +1090,10 @@ const Lessons5WorkoutsRouteRouteWithChildren =
 
 interface LessonsRouteRouteChildren {
   LessonsIndexRoute: typeof LessonsIndexRoute
+  Lessons1WorkoutsRouteRoute: typeof Lessons1WorkoutsRouteRouteWithChildren
   Lessons5WorkoutsRouteRoute: typeof Lessons5WorkoutsRouteRouteWithChildren
   Lessons15IndexRoute: typeof Lessons15IndexRoute
   Lessons2AIndexRoute: typeof Lessons2AIndexRoute
-  Lessons1WorkoutsIdRoute: typeof Lessons1WorkoutsIdRoute
-  Lessons1WorkoutsFooRoute: typeof Lessons1WorkoutsFooRoute
   Lessons10WorkoutsIdRoute: typeof Lessons10WorkoutsIdRoute
   Lessons11WorkoutsIdRoute: typeof Lessons11WorkoutsIdRoute
   Lessons14WorkoutsWorkoutsApiRoute: typeof Lessons14WorkoutsWorkoutsApiRoute
@@ -1094,7 +1106,6 @@ interface LessonsRouteRouteChildren {
   Lessons6WorkoutsIdRoute: typeof Lessons6WorkoutsIdRoute
   Lessons7WorkoutsIdRoute: typeof Lessons7WorkoutsIdRoute
   Lessons9WorkoutsIdRoute: typeof Lessons9WorkoutsIdRoute
-  Lessons1WorkoutsIndexRoute: typeof Lessons1WorkoutsIndexRoute
   Lessons10WorkoutsIndexRoute: typeof Lessons10WorkoutsIndexRoute
   Lessons11WorkoutsIndexRoute: typeof Lessons11WorkoutsIndexRoute
   Lessons12WorkoutsIndexRoute: typeof Lessons12WorkoutsIndexRoute
@@ -1111,11 +1122,10 @@ interface LessonsRouteRouteChildren {
 
 const LessonsRouteRouteChildren: LessonsRouteRouteChildren = {
   LessonsIndexRoute: LessonsIndexRoute,
+  Lessons1WorkoutsRouteRoute: Lessons1WorkoutsRouteRouteWithChildren,
   Lessons5WorkoutsRouteRoute: Lessons5WorkoutsRouteRouteWithChildren,
   Lessons15IndexRoute: Lessons15IndexRoute,
   Lessons2AIndexRoute: Lessons2AIndexRoute,
-  Lessons1WorkoutsIdRoute: Lessons1WorkoutsIdRoute,
-  Lessons1WorkoutsFooRoute: Lessons1WorkoutsFooRoute,
   Lessons10WorkoutsIdRoute: Lessons10WorkoutsIdRoute,
   Lessons11WorkoutsIdRoute: Lessons11WorkoutsIdRoute,
   Lessons14WorkoutsWorkoutsApiRoute: Lessons14WorkoutsWorkoutsApiRoute,
@@ -1129,7 +1139,6 @@ const LessonsRouteRouteChildren: LessonsRouteRouteChildren = {
   Lessons6WorkoutsIdRoute: Lessons6WorkoutsIdRoute,
   Lessons7WorkoutsIdRoute: Lessons7WorkoutsIdRoute,
   Lessons9WorkoutsIdRoute: Lessons9WorkoutsIdRoute,
-  Lessons1WorkoutsIndexRoute: Lessons1WorkoutsIndexRoute,
   Lessons10WorkoutsIndexRoute: Lessons10WorkoutsIndexRoute,
   Lessons11WorkoutsIndexRoute: Lessons11WorkoutsIndexRoute,
   Lessons12WorkoutsIndexRoute: Lessons12WorkoutsIndexRoute,
