@@ -12,6 +12,10 @@ type Exercise = {
   name: string;
 };
 
+type RouteData = {
+  exercises: Exercise[];
+  workouts: Workout[];
+};
 function getWorkoutsAndExercises() {
   const workouts: Workout[] = [
     { id: 1, name: "Workout 1", exercises: [1, 2, 3] },
@@ -30,11 +34,14 @@ function getWorkoutsAndExercises() {
   };
 }
 
+// TODO: 3. loads are isomorphic!!!!!
+
 export const Route = createFileRoute("/lessons/2/workouts/")({
   component: RouteComponent,
   loader: async () => {
-    const { workouts, exercises } = getWorkoutsAndExercises();
+    const { exercises, workouts } = getWorkoutsAndExercises();
 
+    // TODO: 4. Add a console.log statement here
     return {
       workouts,
       exercises,
@@ -45,7 +52,13 @@ export const Route = createFileRoute("/lessons/2/workouts/")({
 });
 
 function RouteComponent() {
-  const { workouts, exercises } = Route.useLoaderData();
+  // TODO: 1. load loader data
+
+  // TODO: 2. use getRouteApi
+
+  const workouts: any[] = [];
+  const exercises: any = [];
+
   const exerciseLookup = useMemo(() => {
     return new Map(exercises.map(exercise => [exercise.id, exercise]));
   }, [exercises]);
