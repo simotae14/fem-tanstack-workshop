@@ -1,6 +1,7 @@
 import type { FC } from "react";
 
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import type { WorkoutForm } from "@/lib/workout-form";
 import { cn } from "@/lib/utils";
@@ -44,8 +45,14 @@ export const RepetitionExerciseSet: FC<RepetitionExerciseSetProps> = ({
                         <form.Field
                           name={`segments[${segmentIndex}].exercises[${exerciseIndex}].measurements[${measurementIndex}].reps`}
                           validators={{
-                            onSubmit: ({ value }) => {
-                              if (value == null) {
+                            onChange: ({ value }) => {
+                              const repsToFailure =
+                                form.state.values.segments[segmentIndex]
+                                  ?.exercises[exerciseIndex]?.measurements[
+                                  measurementIndex
+                                ]?.repsToFailure;
+
+                              if (!repsToFailure && value == null) {
                                 return "Required";
                               }
                             },
@@ -78,16 +85,6 @@ export const RepetitionExerciseSet: FC<RepetitionExerciseSetProps> = ({
                         {showWeightUsed ? (
                           <form.Field
                             name={`segments[${segmentIndex}].exercises[${exerciseIndex}].measurements[${measurementIndex}].weightUsed`}
-                            validators={{
-                              onSubmit: ({ value }) => {
-                                if (
-                                  value == null ||
-                                  value?.toString()?.includes("e")
-                                ) {
-                                  return "Required";
-                                }
-                              },
-                            }}
                             children={weightUsedField => (
                               <label className="h-7 inline-flex items-center gap-1 text-xs text-muted-foreground">
                                 <Input
@@ -97,22 +94,32 @@ export const RepetitionExerciseSet: FC<RepetitionExerciseSetProps> = ({
                                   onChange={event => {
                                     const value = event.target.value;
                                     weightUsedField.handleChange(
-                                      value === "" ? null : Number(value),
+                                      value === "" ? null : value,
                                     );
                                   }}
-                                  className={cn(
-                                    "h-7 w-18 px-2 py-1",
-                                    !weightUsedField.state.meta.isValid
-                                      ? "border-red-500"
-                                      : "",
-                                  )}
+                                  className={cn("h-7 w-24 px-2 py-1")}
                                 />
                               </label>
                             )}
                           />
                         ) : null}
                       </div>
-
+                      <form.Field
+                        name={`segments[${segmentIndex}].exercises[${exerciseIndex}].measurements[${measurementIndex}].repsToFailure`}
+                        children={repsToFailureField => (
+                          <label className="inline-flex items-center gap-0.5 text-xs text-muted-foreground">
+                            <Checkbox
+                              checked={repsToFailureField.state.value ?? false}
+                              onCheckedChange={checked => {
+                                repsToFailureField.handleChange(
+                                  checked === true,
+                                );
+                              }}
+                            />
+                            To failure
+                          </label>
+                        )}
+                      />
                       {measurementIndex === 0 ? (
                         <Button
                           type="button"
@@ -120,30 +127,32 @@ export const RepetitionExerciseSet: FC<RepetitionExerciseSetProps> = ({
                           size="sm"
                           className="w-fit h-5 cursor-pointer"
                           onClick={() => {
+                            const measurementFieldName =
+                              `segments[${segmentIndex}].exercises[${exerciseIndex}].measurements` as const;
                             const measurements = field.state.value;
                             const sourceMeasurement =
                               measurements[measurementIndex];
 
-                            for (let i = 1; i < measurements.length; i++) {
-                              if (
-                                sourceMeasurement.reps ||
-                                sourceMeasurement.reps === 0
-                              ) {
-                                form.setFieldValue(
-                                  `segments[${segmentIndex}].exercises[${exerciseIndex}].measurements[${i}].reps`,
-                                  sourceMeasurement.reps,
-                                );
-                              }
-                              if (
-                                sourceMeasurement.weightUsed ||
-                                sourceMeasurement.weightUsed === 0
-                              ) {
-                                form.setFieldValue(
-                                  `segments[${segmentIndex}].exercises[${exerciseIndex}].measurements[${i}].weightUsed`,
-                                  sourceMeasurement.weightUsed,
-                                );
-                              }
-                            }
+                            form.setFieldValue(
+                              measurementFieldName,
+                              measurements.map(
+                                (measurement, targetMeasurementIndex) => {
+                                  if (
+                                    targetMeasurementIndex === measurementIndex
+                                  ) {
+                                    return measurement;
+                                  }
+
+                                  return {
+                                    ...measurement,
+                                    reps: sourceMeasurement.reps,
+                                    repsToFailure:
+                                      sourceMeasurement.repsToFailure,
+                                    weightUsed: sourceMeasurement.weightUsed,
+                                  };
+                                },
+                              ),
+                            );
                           }}
                         >
                           Fill

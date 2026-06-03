@@ -130,6 +130,7 @@ CREATE TABLE IF NOT EXISTS workout_segment_exercise_measurement (
   workout_segment_exercise_id INT NOT NULL REFERENCES workout_segment_exercise(id) ON DELETE CASCADE,
   set_order INT NOT NULL CHECK (set_order > 0),
   reps INT,
+  reps_to_failure BOOL,
   weight_used NUMERIC(8, 2),
   duration NUMERIC(8, 2),
   distance NUMERIC(8, 2)
@@ -184,28 +185,7 @@ CREATE INDEX IF NOT EXISTS idx_network_timing_log_client_start
 
 
 -- ================================================================================
--- Auth
--- ================================================================================
-
-CREATE TABLE IF NOT EXISTS users (
-  id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  name VARCHAR(50) NOT NULL,
-  avatar VARCHAR(250)
-);
-
--- ================================================================================
 -- Data
--- ================================================================================
-
--- ================================================================================
--- Auth Data
--- ================================================================================
-
-INSERT INTO users (name, avatar)
-VALUES ('Adam', 'https://d193qjyckdxivp.cloudfront.net/avatar.jpg');
-
--- ================================================================================
--- Exercises Data
 -- ================================================================================
 
 WITH exercise_seed AS (
@@ -345,6 +325,7 @@ FROM (
 -- ================================================================================
 -- Workout Template Data
 -- ================================================================================
+
 
 INSERT INTO workout_template (name, description)
 VALUES
@@ -616,6 +597,7 @@ INSERT INTO workout_segment_exercise_measurement (
   workout_segment_exercise_id,
   set_order,
   reps,
+  reps_to_failure,
   weight_used,
   duration,
   distance
@@ -627,6 +609,10 @@ SELECT
     WHEN ex.execution_type = 'repetition' THEN 8
     ELSE NULL
   END AS reps,
+  CASE
+    WHEN ex.execution_type = 'repetition' THEN false
+    ELSE NULL
+  END AS reps_to_failure,
   CASE
     WHEN ex.execution_type = 'repetition' AND NOT ex.is_bodyweight THEN 135
     ELSE NULL

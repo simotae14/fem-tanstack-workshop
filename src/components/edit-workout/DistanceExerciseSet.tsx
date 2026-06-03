@@ -37,8 +37,8 @@ export const DistanceExerciseSet: FC<DistanceExerciseSetProps> = ({
                       <form.Field
                         name={`segments[${segmentIndex}].exercises[${exerciseIndex}].measurements[${measurementIndex}].distance`}
                         validators={{
-                          onSubmit: ({ value }) => {
-                            if (!value && value !== 0) {
+                          onChange: ({ value }) => {
+                            if (value == null || value === "") {
                               return "Required";
                             }
                           },
@@ -53,7 +53,7 @@ export const DistanceExerciseSet: FC<DistanceExerciseSetProps> = ({
                               onChange={event => {
                                 const value = event.target.value;
                                 distanceField.handleChange(
-                                  value === "" ? null : Number(value),
+                                  value === "" ? null : value,
                                 );
                               }}
                               className={cn(
@@ -73,21 +73,29 @@ export const DistanceExerciseSet: FC<DistanceExerciseSetProps> = ({
                           size="sm"
                           className="w-fit h-5 cursor-pointer"
                           onClick={() => {
+                            const measurementFieldName =
+                              `segments[${segmentIndex}].exercises[${exerciseIndex}].measurements` as const;
                             const measurements = field.state.value;
                             const sourceMeasurement =
                               measurements[measurementIndex];
 
-                            if (
-                              sourceMeasurement.distance ||
-                              sourceMeasurement.distance === 0
-                            ) {
-                              for (let i = 1; i < measurements.length; i++) {
-                                form.setFieldValue(
-                                  `segments[${segmentIndex}].exercises[${exerciseIndex}].measurements[${i}].distance`,
-                                  sourceMeasurement.distance,
-                                );
-                              }
-                            }
+                            form.setFieldValue(
+                              measurementFieldName,
+                              measurements.map(
+                                (measurement, targetMeasurementIndex) => {
+                                  if (
+                                    targetMeasurementIndex === measurementIndex
+                                  ) {
+                                    return measurement;
+                                  }
+
+                                  return {
+                                    ...measurement,
+                                    distance: sourceMeasurement.distance,
+                                  };
+                                },
+                              ),
+                            );
                           }}
                         >
                           Fill

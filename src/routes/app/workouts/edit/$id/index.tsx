@@ -120,7 +120,6 @@ const WorkoutDetailForm: FC<WorkoutDetailFormProps> = ({
     event.preventDefault();
     event.stopPropagation();
 
-    await form.validateAllFields("submit");
     await form.handleSubmit();
   };
 

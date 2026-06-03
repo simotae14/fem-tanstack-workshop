@@ -102,6 +102,16 @@ const RenderWorkoutForm: FC<RenderWorkoutFormProps> = props => {
     <Fragment key={formResetKey}>
       <WorkoutFormContent
         workoutState={workoutState}
+        onSaved={addAnother => {
+          if (addAnother) {
+            onReset();
+          } else {
+            queryClient.invalidateQueries({
+              queryKey: workoutHistoryQueryOptions({ page: 1 }).queryKey,
+            });
+            navigate({ to: "/app/workouts", search: { page: 1 } });
+          }
+        }}
         onReset={() => onReset()}
       />
     </Fragment>
@@ -110,11 +120,12 @@ const RenderWorkoutForm: FC<RenderWorkoutFormProps> = props => {
 
 type WorkoutFormContentProps = {
   workoutState: WorkoutState;
+  onSaved: (addAnother: boolean) => void;
   onReset: () => void;
 };
 
 const WorkoutFormContent: FC<WorkoutFormContentProps> = props => {
-  const { workoutState, onReset } = props;
+  const { workoutState, onSaved, onReset } = props;
 
   const { data: exercises } = useSuspenseQuery(exercisesQueryOptions());
   const { data: muscleGroups } = useSuspenseQuery(muscleGroupsQueryOptions());
@@ -122,37 +133,27 @@ const WorkoutFormContent: FC<WorkoutFormContentProps> = props => {
   const [isSaving, setIsSaving] = useState(false);
   const addAnotherRef = useRef(false);
 
-  const queryClient = useQueryClient();
-  const navigate = useNavigate();
-
   const form = useWorkoutForm(async state => {
     setIsSaving(true);
 
-    await saveWorkout({ data: state });
-
-    if (addAnotherRef.current) {
-      onReset();
+    try {
+      await saveWorkout({ data: state });
+      onSaved(addAnotherRef.current);
+      toast.success("Workout created", { position: "top-center" });
+    } finally {
       setIsSaving(false);
-    } else {
-      queryClient.invalidateQueries({
-        queryKey: workoutHistoryQueryOptions({ page: 1 }).queryKey,
-      });
-      navigate({ to: "/app/workouts", search: { page: 1 } });
     }
-
-    toast.success("Workout created", { position: "top-center" });
   }, workoutState);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     event.stopPropagation();
 
-    await form.validateAllFields("submit");
     await form.handleSubmit();
   };
 
   return (
-    <form onSubmit={handleSubmit} noValidate>
+    <form onSubmit={handleSubmit}>
       <Workout form={form} exercises={exercises} muscleGroups={muscleGroups} />
       <div className="flex mt-8">
         <Button type="submit" disabled={isSaving} className="font-semibold">

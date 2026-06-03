@@ -1,9 +1,10 @@
 import {
+  bodyCompositionLengthUnit,
   bodyCompositionMeasurement,
   bodyCompositionMeasurementType,
   bodyCompositionMetric,
+  bodyCompositionWeightUnit,
 } from "@/drizzle/schema";
-import type { BodyCompositionMeasurementType } from "../types";
 
 export type BodyCompositionMetric =
   typeof bodyCompositionMetric.$inferInsert & {
@@ -17,13 +18,19 @@ export type BodyCompositionMeasurement =
 export type ExistingBodyCompositionMeasurement =
   typeof bodyCompositionMeasurement.$inferSelect;
 
+export type BodyCompositionMeasurementType =
+  (typeof bodyCompositionMeasurementType.enumValues)[number];
+export type BodyCompositionLengthUnit =
+  (typeof bodyCompositionLengthUnit.enumValues)[number];
+export type BodyCompositionWeightUnit =
+  (typeof bodyCompositionWeightUnit.enumValues)[number];
+
 export type BodyCompositionMetricState = BodyCompositionMetric & {
   id?: number;
 };
 
 export type BodyCompositionMeasurementState = BodyCompositionMeasurement & {
   id?: number;
-  bodyCompositionMeasurementType: BodyCompositionMeasurementType | null;
 };
 
 export type BodyCompositionMeasurementWithMetric =

@@ -53,6 +53,7 @@ function RouteComponent() {
 
 function RouteContent() {
   const { id } = Route.useParams();
+  const navigate = Route.useNavigate();
   const workoutTemplateId = Number(id);
 
   const { data: workoutTemplate } = useSuspenseQuery(
@@ -66,7 +67,7 @@ function RouteContent() {
     if (workoutTemplate == null || workoutTemplate.id == null) {
       throw notFound();
     }
-  }, [workoutTemplate]);
+  }, [navigate, workoutTemplate]);
 
   if (workoutTemplate == null || workoutTemplate.id == null) {
     return null;
@@ -113,7 +114,6 @@ const WorkoutTemplateDetailForm: FC<WorkoutTemplateDetailFormProps> = ({
     event.preventDefault();
     event.stopPropagation();
 
-    await form.validateAllFields("submit");
     await form.handleSubmit();
   };
 

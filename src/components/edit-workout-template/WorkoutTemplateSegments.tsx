@@ -36,7 +36,7 @@ export const WorkoutTemplateSegments: FC<WorkoutTemplateSegmentsProps> = ({
                 <form.Field
                   name={`segments[${segmentIndex}].sets`}
                   validators={{
-                    onSubmit: ({ value }) => {
+                    onChange: ({ value }) => {
                       if (
                         typeof value !== "number" ||
                         Number.isNaN(value) ||

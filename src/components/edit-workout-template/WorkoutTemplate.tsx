@@ -25,7 +25,7 @@ export const WorkoutTemplate: FC<WorkoutTemplateProps> = ({
         <form.Field
           name="name"
           validators={{
-            onSubmit: ({ value }) => {
+            onChange: ({ value }) => {
               if (!value) {
                 return "Required";
               }

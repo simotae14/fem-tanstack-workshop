@@ -44,6 +44,19 @@ export const RepetitionExerciseSet: FC<RepetitionExerciseSetProps> = ({
                       <div className="flex flex-wrap gap-2">
                         <form.Field
                           name={`segments[${segmentIndex}].exercises[${exerciseIndex}].measurements[${measurementIndex}].reps`}
+                          validators={{
+                            onChange: ({ value }) => {
+                              const repsToFailure =
+                                form.state.values.segments[segmentIndex]
+                                  ?.exercises[exerciseIndex]?.measurements[
+                                  measurementIndex
+                                ]?.repsToFailure;
+
+                              if (!repsToFailure && value == null) {
+                                return "Required";
+                              }
+                            },
+                          }}
                           children={repsField => (
                             <label
                               key={`reps-${setNumber}`}
@@ -84,7 +97,7 @@ export const RepetitionExerciseSet: FC<RepetitionExerciseSetProps> = ({
                                       value === "" ? null : value,
                                     );
                                   }}
-                                  className={cn("h-7 w-18 px-2 py-1")}
+                                  className={cn("h-7 w-24 px-2 py-1")}
                                 />
                               </label>
                             )}

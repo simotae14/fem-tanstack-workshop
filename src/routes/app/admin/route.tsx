@@ -38,7 +38,7 @@ function RouteComponent() {
         <Link
           to="/app/admin/workout-templates"
           className={navLinkClassName}
-          activeOptions={{ exact: false }}
+          activeOptions={{ exact: true }}
           activeProps={activeNavLinkProps}
           inactiveProps={inactiveNavLinkProps}
         >

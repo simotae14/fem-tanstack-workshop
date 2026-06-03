@@ -76,15 +76,6 @@ function RouteComponent() {
                 Lesson 2A - Not Found Errors
               </Link>
             </>
-          ) : idx === "16" ? (
-            <Link
-              to={`/rsc-demo`}
-              preload={false}
-              className="rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-slate-900 transition hover:border-slate-400 hover:bg-slate-100 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100 dark:hover:border-slate-400 dark:hover:bg-slate-800"
-              key={idx}
-            >
-              Lesson 16 - RSC
-            </Link>
           ) : (
             <Link
               to={`/lessons/${idx as PagelessLessonKey}/workouts`}
@@ -100,7 +91,7 @@ function RouteComponent() {
           href="https://github.com/arackaf/tanstack-blog-blog-post"
           className="rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-slate-900 transition hover:border-slate-400 hover:bg-slate-100 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100 dark:hover:border-slate-400 dark:hover:bg-slate-800"
         >
-          Lesson 17 - Static Pre-rendering
+          Lesson 16 - Static Pre-rendering
         </a>
       </div>
     </div>
